@@ -1,43 +1,32 @@
+module Enumeration; end
+require 'enumeration/collection'
+
 module Enumeration
 
   module ClassMethods
-    def enum(name, map)
+    def enum(name, map_or_list)
       # TODO: validate name
-      unless map.kind_of?(::Hash)
-        raise ArguementError, "please specify the enum map as a Hash"
-      end
+      c = Collection.new(map_or_list)
 
       # define an anonymous Module to extend on
       # defining a class level map reader
       class_methods = Module.new do
-        define_method(name) do |key|
-          class_variable_get("@@#{name}")[key]
-        end
-        define_method(name.to_s+'_set') do
-          class_variable_get("@@#{name}").keys
-        end
+        define_method(name) {|k| class_variable_get("@@#{name}")[k]} if c.map?
+        define_method(name.to_s+'_set') { c.set }
       end
 
       # set a class variable to store the enum map (used by above reader)
       # extend the anonymous module to get tne above class
       #   level reader for the map
       class_eval do
-        class_variable_set("@@#{name}", map)
+        class_variable_set("@@#{name}", c)
         extend class_methods
       end
 
       # instance writer for the enum value
       define_method("#{name}=") do |value|
-        map = self.class.send(:class_variable_get, "@@#{name}")
-        instance_variable_set("@#{name}", if value && map.has_key?(value)
-          # write by key
-          map[value]
-        elsif map.has_value?(value)
-          # write by value
-          value
-        else
-          nil
-        end)
+        c = self.class.send(:class_variable_get, "@@#{name}")
+        instance_variable_set("@#{name}", c[value])
       end
 
       # instance reader for the enum value

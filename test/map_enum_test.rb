@@ -13,19 +13,21 @@ class MapEnumTest < Test::Unit::TestCase
       })
     end
 
-    should_have_class_method :stuff, :stuff_set
+    should_have_class_methods :stuff, :stuff_set
+    should_have_accessor :stuff
 
-    should "provide class level access to the enum" do
-      stuffs = Thing.send(:class_variable_get, "@@stuff")
+    should "provide class level access to the enum set" do
+      stuffs = Thing.stuff_set
       assert stuffs
-      assert_kind_of ::Hash, stuffs
+      assert_kind_of ::Array, stuffs
       assert !stuffs.empty?
       assert_equal 3, stuffs.size
-      assert_equal stuffs.keys, Thing.stuff_set
-      assert_equal "aye", Thing.stuff(:a)
+      [:a, :b, :c].each{|t| assert Thing.stuff_set.include?(t)}
     end
 
-    should_have_accessor :stuff
+    should "provide class level lookup of the enum" do
+      assert_equal "aye", Thing.stuff(:a)
+    end
 
     should "write by key and read by value" do
       subject.stuff = :b
