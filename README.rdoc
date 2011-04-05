@@ -8,9 +8,51 @@ add enumerated value attributes to your ruby classes
 
     gem install enumeration
 
-== Usage
+== Basic Example and Usage
 
     require 'enumeration'
+
+    class Thing
+      include Enumeration
+
+      # list enumeration
+      enum :word, %w{aye bee see}
+
+      # map enumeration
+      enum :stuff, {
+        :a => "aye",
+        :b => "bee",
+        :c => "see"
+      }
+    end
+
+    # get the enum sets
+    Thing.word_set      # => ['aye', 'bee', 'see']
+    Thing.stuff_set     # => [:a, :b, :c]
+
+    # lookup mapped enum values
+    Thing.stuff(:a)     # => "aye"
+
+
+    t = Thing.new
+
+    # write list enum values
+    t.word              # => nil
+    t.word = "aye"
+    t.word              # => "aye"
+    t.word = "dee"
+    t.word              # => nil  (won't write non enum values)
+
+    # write mapped enum value
+    t.stuff             # => nil
+    t.stuff = :b
+    t.stuff             # => "bee" (write using key)
+    t.stuff = "see"
+    t.stuff             # => "see" (write using value)
+    t.stuff = :d
+    t.stuff             # => nil (won't write non enum keys)
+    t.stuff = "dee"
+    t.stuff             # => nil (won't write non enum values)
 
 == License
 
