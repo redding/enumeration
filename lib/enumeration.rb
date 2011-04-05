@@ -1,0 +1,3 @@
+module Enumeration
+  # Your code goes here...
+end
