@@ -11,8 +11,9 @@ module Enumeration
       # define an anonymous Module to extend on
       # defining a class level map reader
       class_methods = Module.new do
-        define_method(name) {|k| class_variable_get("@@#{name}")[k]} if c.map?
+        define_method(name.to_s+'_collection') { c.data }
         define_method(name.to_s+'_set') { c.set }
+        define_method(name) {|k| class_variable_get("@@#{name}")[k]} if c.map?
       end
 
       # set a class variable to store the enum map (used by above reader)
@@ -30,8 +31,12 @@ module Enumeration
       end
 
       # instance reader for the enum value
-      define_method(name) do
-        instance_variable_get("@#{name}")
+      define_method(name) { instance_variable_get("@#{name}") }
+
+      # instance reader for the enum key
+      define_method(name.to_s+'_key') do
+        c = self.class.send(:class_variable_get, "@@#{name}")
+        c.key(instance_variable_get("@#{name}"))
       end
     end
   end

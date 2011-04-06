@@ -5,6 +5,7 @@ class CollectionAPITest < Test::Unit::TestCase
   context "Enumeration collection" do
     subject { Enumeration::Collection.new([]) }
 
+    should_have_reader :data
     should_have_instance_methods :set, :map?, :list?, :[]
 
     should "only be created from Arrays or Hashes" do
@@ -29,12 +30,20 @@ class ListCollectionTest < Test::Unit::TestCase
       assert_equal false, subject.map?
     end
 
+    should "know it's data" do
+      assert_equal ['one', 'two', 'three'], subject.data
+    end
+
     should "know it's set" do
       assert_equal ['one', 'two', 'three'], subject.set
     end
 
-    should "lookup by value" do
+    should "lookup value by key" do
       assert_equal 'two', subject['two']
+    end
+
+    should "lookup key by value" do
+      assert_equal 'three', subject.key('three')
     end
 
   end
@@ -49,16 +58,28 @@ class MapCollectionTest < Test::Unit::TestCase
       assert_equal false, subject.list?
     end
 
+    should "know it's data" do
+      assert_equal({:one=>1,:two=>2,:three=>3}, subject.data)
+    end
+
     should "know it's set" do
       [:one, :two, :three].each{|n| assert subject.set.include?(n)}
     end
 
-    should "lookup by key" do
+    should "lookup value by key" do
       assert_equal 2, subject[:two]
     end
 
-    should "lookup by value" do
+    should "lookup value by value" do
       assert_equal 2, subject[2]
+    end
+
+    should "lookup key by value" do
+      assert_equal :two, subject.key(2)
+    end
+
+    should "lookup key by key" do
+      assert_equal :two, subject.key(:two)
     end
 
   end

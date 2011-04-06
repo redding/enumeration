@@ -40,19 +40,25 @@ add enumerated value attributes to your ruby classes
     t.word              # => nil
     t.word = "aye"
     t.word              # => "aye"
+    t.word_key          # => "aye" (a list's 'keys' are it's values, vice-versa)
     t.word = "dee"
     t.word              # => nil  (won't write non enum values)
+    t.word_key          # => nil
 
     # write mapped enum value
     t.stuff             # => nil
-    t.stuff = :b
-    t.stuff             # => "bee" (write using key)
-    t.stuff = "see"
-    t.stuff             # => "see" (write using value)
+    t.stuff = :b        #    (write using key)
+    t.stuff             # => "bee"
+    t.stuff_key         # => :b
+    t.stuff = "see"     #    (write using value)
+    t.stuff             # => "see"
+    t.stuff_key         # => :c
     t.stuff = :d
     t.stuff             # => nil (won't write non enum keys)
+    t.stuff_key         # => nil
     t.stuff = "dee"
     t.stuff             # => nil (won't write non enum values)
+    t.stuff_key         # => nil
 
 == License
 
