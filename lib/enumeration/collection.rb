@@ -25,7 +25,7 @@ module Enumeration
     # lookup collection key by a value
     def key(value)
       if self.map? && @data.has_value?(value)
-        @data.index(value)
+        @data.invert[value]
       elsif (self.map?  && @data.has_key?(value)) ||
             (self.list? && @data.include?(value))
         value
