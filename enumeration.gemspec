@@ -18,5 +18,5 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_development_dependency("bundler", ["~> 1.0"])
-  s.add_development_dependency("assert", ["~> 0.2.0"])
+  s.add_development_dependency("assert", ["~> 0.3.0"])
 end
