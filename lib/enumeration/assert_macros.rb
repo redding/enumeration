@@ -28,9 +28,9 @@ module Enumeration::AssertMacros
       macro_name += " with #{values.inspect} values" if !values.empty?
 
       Assert::Macro.new(macro_name) do
-        should have_instance_methods name, "#{name}=", [called_from]
+        should have_accessor name, [called_from]
 
-        should have_class_methods "#{name}_collection", [called_from]
+        should have_class_method "#{name}_collection", [called_from]
 
         if type == 'map'
           should have_class_method name, [called_from]
