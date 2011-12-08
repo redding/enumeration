@@ -42,7 +42,7 @@ module Enumeration::AssertMacros
           end
 
           if type == 'map'
-            should "map the '#{name}' enum values at the class level" do
+            should "map the '#{name}' enum values at the class level", called_from do
               values.each {|k,v| assert_equal v, subject.class.send(name, k)}
             end
           end
