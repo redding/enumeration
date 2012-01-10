@@ -1,3 +1,4 @@
+module Enumeration; end
 module Enumeration::AssertMacros
 
   # a set of Assert macros to help write enum definition and
