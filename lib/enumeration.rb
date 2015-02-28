@@ -1,4 +1,4 @@
-module Enumeration; end
+require 'enumeration/version'
 require 'enumeration/collection'
 
 module Enumeration

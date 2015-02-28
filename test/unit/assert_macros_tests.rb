@@ -1,25 +1,27 @@
 require 'assert'
-
-require 'enumeration'
 require 'enumeration/assert_macros'
 
 module Enumeration::AssertMacros
 
-  class BaseTests < Assert::Context
-    desc "Enumeration::AssertMacros"
+  class UnitTests < Assert::Context
     include Enumeration::AssertMacros
 
-    before do
-      Thing.send :include, Enumeration
-      Thing.send(:enum, :list, %w{aye bee see})
-      Thing.send(:enum, :map, {
-        :a => "aye",
-        :b => "bee",
-        :c => "see"
-      })
-      @a_thing = Thing.new
+    desc "Enumeration::AssertMacros"
+    setup do
+      @enum_class = Class.new do
+        include Enumeration
+
+        enum :list, %w{aye bee see}
+
+        enum :map, {
+          :a => "aye",
+          :b => "bee",
+          :c => "see"
+        }
+      end
+      @enum = @enum_class.new
     end
-    subject { @a_thing }
+    subject{ @enum }
 
     should have_enum :list
     should have_enum :list, ['aye', 'bee', 'see']
