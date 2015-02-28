@@ -1,5 +1,6 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
 gemspec
 
-gem 'rake', '~>0.9.2'
+gem 'rake', "~> 10.4.0"
+gem 'pry', "~> 0.9.0"
